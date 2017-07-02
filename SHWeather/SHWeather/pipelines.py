@@ -6,7 +6,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 import pymysql
-from TrafficScrapy import settings
+from SHWeather import settings
 
 class ShweatherPipeline(object):
     def __init__(self):
