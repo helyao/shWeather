@@ -8,6 +8,7 @@
 import pymysql
 from SHWeather import settings
 
+
 class ShweatherPipeline(object):
     def __init__(self):
         self.connect = pymysql.connect(
@@ -22,14 +23,27 @@ class ShweatherPipeline(object):
 
     def process_item(self, item, spider):
         try:
+            # sql = 'INSERT INTO ' + self.table_name + '(`time`, `wea_from`, `wea_to`, `tem_from`, `tem_to`, `win_from`, `win_to`) VALUES("' \
+            #       + item['time'] + '", "' \
+            #       + item['wea_from'].encode("gb2312") + '", "' \
+            #       + item['wea_to'].encode("gb2312") + '", ' \
+            #       + item['tem_from'] + ', ' \
+            #       + item['tem_to'] + ', "' \
+            #       + item['win_from'].encode("gb2312") + '", "' \
+            #       + item['win_to'].encode("gb2312") + '")'
             sql = 'INSERT INTO {table_name}(`time`, `wea_from`, `wea_to`, `tem_from`, `tem_to`, `win_from`, `win_to`) ' \
-                  'VALUES("{time}", "{wea_from}", "{wea_to}", "{tem_from}", "{tem_to}", {win_from}, {win_to})'.format(
-                table_name=self.table_name, time=item['time'],
-                wea_from=item['wea_from'], wea_to=item['wea_to'],
-                tem_from=item['tem_from'], tem_to=item['tem_to'], win_from=item['win_from'], win_to=item['win_to'])
-            #print(sql)
+                  'VALUES("{time}", "{wea_from}", "{wea_to}", {tem_from}, {tem_to}, "{win_from}", "{win_to}")'.format(
+                table_name=self.table_name,
+                time=item['time'],
+                wea_from=item['wea_from'],
+                wea_to=item['wea_to'],
+                tem_from=item['tem_from'],
+                tem_to=item['tem_to'],
+                win_from=item['win_from'],
+                win_to=item['win_to'])
+            print(sql)
             self.cursor.execute(sql)
             self.connect.commit()
-        except:
-            pass
+        except Exception as ex:
+            print(ex)
         return item

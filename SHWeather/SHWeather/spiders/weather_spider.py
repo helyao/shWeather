@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 import scrapy
 import lxml.html
 from ..basefunc import GetDateStamp
 from ..items import ShweatherItem
 
 
-class MobikeSpider(scrapy.Spider):
+class SHWeather(scrapy.Spider):
 
     name = "weather"
 
@@ -13,7 +14,8 @@ class MobikeSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        html = response.body.decode('utf-8')
+        # html = unicode(response.body, 'GBK').encode('UTF-8')
+        html = response.body
         tree = lxml.html.fromstring(html)
         # weather
         weainfo = tree.cssselect('p.wea')
@@ -36,7 +38,8 @@ class MobikeSpider(scrapy.Spider):
         item['tem_to'] = tem_to
         item['win_from'] = win_from
         item['win_to'] = win_to
-        yield item
+        print(item)
+        return item
 
 
 
