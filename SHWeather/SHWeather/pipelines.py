@@ -16,31 +16,20 @@ class ShweatherPipeline(object):
             port=settings.MYSQL_PORT,
             user=settings.MYSQL_USER,
             passwd=settings.MYSQL_PASSWD,
-            db=settings.MYSQL_DATABASE
+            db=settings.MYSQL_DATABASE,
+            use_unicode=True,
+            charset="utf8"
         )
         self.cursor = self.connect.cursor()
         self.table_name = settings.MYSQL_TABLE
 
     def process_item(self, item, spider):
         try:
-            # sql = 'INSERT INTO ' + self.table_name + '(`time`, `wea_from`, `wea_to`, `tem_from`, `tem_to`, `win_from`, `win_to`) VALUES("' \
-            #       + item['time'] + '", "' \
-            #       + item['wea_from'].encode("gb2312") + '", "' \
-            #       + item['wea_to'].encode("gb2312") + '", ' \
-            #       + item['tem_from'] + ', ' \
-            #       + item['tem_to'] + ', "' \
-            #       + item['win_from'].encode("gb2312") + '", "' \
-            #       + item['win_to'].encode("gb2312") + '")'
-            sql = 'INSERT INTO {table_name}(`time`, `wea_from`, `wea_to`, `tem_from`, `tem_to`, `win_from`, `win_to`) ' \
-                  'VALUES("{time}", "{wea_from}", "{wea_to}", {tem_from}, {tem_to}, "{win_from}", "{win_to}")'.format(
-                table_name=self.table_name,
-                time=item['time'],
-                wea_from=item['wea_from'],
-                wea_to=item['wea_to'],
-                tem_from=item['tem_from'],
-                tem_to=item['tem_to'],
-                win_from=item['win_from'],
-                win_to=item['win_to'])
+            sql = 'INSERT INTO %s(`time`, `wea_from`, `wea_to`, `tem_from`, `tem_to`, `win_from`, `win_to`) ' \
+                  'VALUES("%s", "%s", "%s", %s, %s, "%s", "%s")' % (self.table_name,
+                                                                    item['time'], item['wea_from'],
+                                                                    item['wea_to'], item['tem_from'],
+                                                                    item['tem_to'], item['win_from'], item['win_to'])
             print(sql)
             self.cursor.execute(sql)
             self.connect.commit()
