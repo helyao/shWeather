@@ -25,8 +25,8 @@ class ShweatherPipeline(object):
 
     def process_item(self, item, spider):
         try:
-            sql = 'INSERT INTO %s(`time`, `wea_from`, `wea_to`, `tem_from`, `tem_to`, `win_from`, `win_to`) ' \
-                  'VALUES("%s", "%s", "%s", %s, %s, "%s", "%s")' % (self.table_name,
+            sql = 'INSERT INTO %s(`time`, `wea_from`, `wea_to`, `tem_from`, `tem_to`, `win_from`, `win_to`, `time_stamp`) ' \
+                  'VALUES("%s", "%s", "%s", %s, %s, "%s", "%s", NOW())' % (self.table_name,
                                                                     item['time'], item['wea_from'],
                                                                     item['wea_to'], item['tem_from'],
                                                                     item['tem_to'], item['win_from'], item['win_to'])

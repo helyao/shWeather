@@ -28,7 +28,8 @@ CREATE TABLE `sh_weather` (
   `tem_from` int(11) DEFAULT NULL,
   `tem_to` int(11) DEFAULT NULL,
   `win_from` varchar(30) DEFAULT NULL,
-  `win_to` varchar(30) DEFAULT NULL
+  `win_to` varchar(30) DEFAULT NULL,
+  `time_stamp` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
